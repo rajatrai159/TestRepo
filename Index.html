@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Independence Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Sovereign Dawn Palette */
+        :root {
+            --bg-main: #F5F5DC; /* Beige */
+            --text-primary: #2C3E50; /* Dark Slate Blue */
+            --accent-saffron: #FF9933;
+            --card-bg: #FFFFFF;
+            --border-color: #D1D5DB; /* Tailwind gray-300 */
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container-card {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        .btn-primary {
+            background-color: var(--accent-saffron);
+            color: white;
+            transition: background-color 0.3s ease;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: inline-block; /* Ensure padding works */
+            text-decoration: none; /* Remove underline for links */
+        }
+        .btn-primary:hover {
+            background-color: #E68A00; /* Darker Saffron */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container-card">
+        <h1 class="text-4xl font-bold mb-6" style="color: var(--text-primary);">Explore India's Freedom Struggle</h1>
+        <p class="text-lg leading-relaxed mb-8">
+            Welcome to the portal dedicated to the rich and inspiring history of Indian Independence.
+            Delve into the pivotal moments, influential leaders, and significant movements that shaped India's journey from colonial rule to a sovereign nation.
+        </p>
+        <a href="IndianIndependence.html" class="btn-primary">Start Your Journey</a>
+        <p class="mt-6 text-sm text-gray-600">
+            Click the button above to access the interactive application.
+        </p>
+    </div>
+
+</body>
+</html>

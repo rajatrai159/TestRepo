@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Journey to Indian Independence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Defaulting to Inter as common, will be overridden by Tailwind base */
+        }
+        /* Sovereign Dawn Palette */
+        :root {
+            --bg-main: #F5F5DC; /* Beige */
+            --text-primary: #2C3E50; /* Dark Slate Blue */
+            --accent-saffron: #FF9933;
+            --accent-green: #4CAF50;
+            --card-bg: #FFFFFF;
+            --border-color: #D1D5DB; /* Tailwind gray-300 */
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-saffron);
+            border-bottom-color: var(--accent-saffron);
+        }
+        .section-title {
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-saffron);
+            padding-bottom: 0.5rem;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+        }
+        .btn-primary {
+            background-color: var(--accent-saffron);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #E68A00; /* Darker Saffron */
+        }
+        .chart-container-styled {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Max width for chart readability */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 350px; /* Max height */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container-styled {
+                height: 350px;
+            }
+        }
+
+        /* Custom scrollbar for better aesthetics if desired, optional */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <div>
+                        <a href="#" class="flex items-center py-4 px-2">
+                            <span class="font-semibold text-lg" style="color: var(--text-primary);">India's Independence</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="#intro" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Intro</a>
+                    <a href="#early-dominance" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Early Dominance</a>
+                    <a href="#revolt-1857" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Revolt 1857</a>
+                    <a href="#nationalism" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Nationalism</a>
+                    <a href="#gandhian-era" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Gandhian Era</a>
+                    <a href="#key-figures" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Key Figures</a>
+                    <a href="#partition" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Partition</a>
+                    <a href="#legacy" class="nav-link py-4 px-2 border-b-2 border-transparent font-semibold">Legacy</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="outline-none mobile-menu-button">
+                        <svg class="w-6 h-6 text-gray-500 hover:text-orange-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hidden mobile-menu">
+            <ul class="">
+                <li><a href="#intro" class="block text-sm px-2 py-4 nav-link font-semibold">Intro</a></li>
+                <li><a href="#early-dominance" class="block text-sm px-2 py-4 nav-link font-semibold">Early Dominance</a></li>
+                <li><a href="#revolt-1857" class="block text-sm px-2 py-4 nav-link font-semibold">Revolt 1857</a></li>
+                <li><a href="#nationalism" class="block text-sm px-2 py-4 nav-link font-semibold">Nationalism</a></li>
+                <li><a href="#gandhian-era" class="block text-sm px-2 py-4 nav-link font-semibold">Gandhian Era</a></li>
+                <li><a href="#key-figures" class="block text-sm px-2 py-4 nav-link font-semibold">Key Figures</a></li>
+                <li><a href="#partition" class="block text-sm px-2 py-4 nav-link font-semibold">Partition</a></li>
+                <li><a href="#legacy" class="block text-sm px-2 py-4 nav-link font-semibold">Legacy</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto p-6 space-y-12">
+
+        <section id="intro" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">The Journey to Indian Independence</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-4">This application explores the long and complex saga of Indian Independence, marked by centuries of foreign rule, the rise of powerful nationalist movements, and ultimately, the triumph of a nation's will for self-determination. Navigate through the different eras using the links above to learn more about key events, figures, and movements that shaped India's path to freedom.</p>
+                <p>The story unfolds chronologically, highlighting pivotal moments and the collective effort of countless individuals who contributed to this historic achievement.</p>
+            </div>
+        </section>
+
+        <section id="early-dominance" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">Early British Dominance (17th - 18th Century)</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-4">British involvement in India began with the <strong>East India Company</strong> in the early 17th century, primarily as a trading entity. Over time, through strategic alliances, military conquests, and exploitation of local rivalries, the Company gradually expanded its influence.</p>
+                <p class="mb-4">Key battles like the <strong class="interactive-term" data-term="plassey">Battle of Plassey (1757)</strong> and the <strong class="interactive-term" data-term="buxar">Battle of Buxar (1764)</strong> cemented British supremacy, transforming the Company from a trading power into a formidable political and administrative force.</p>
+                <figure class="my-6 text-center">
+                    <img src="https://placehold.co/600x300/D1C4E9/311B92?text=East+India+Company+Era" alt="Depiction of early British presence in India" class="mx-auto rounded-lg shadow-md">
+                    <figcaption class="mt-2 text-sm text-gray-600">Illustration representing the East India Company's growing influence.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="revolt-1857" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">The Great Revolt of 1857</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-4">The simmering discontent against British policies, economic exploitation, and cultural insensitivity erupted in the <strong>Sepoy Mutiny of 1857</strong>, which quickly escalated into a widespread rebellion across northern and central India. This event is often referred to as India's "First War of Independence."</p>
+                <p class="mb-4">Though ultimately suppressed, this revolt was a watershed moment. It led to the dissolution of the East India Company and the direct assumption of control by the British Crown, marking the beginning of the <strong>British Raj</strong>.</p>
+                 <figure class="my-6 text-center">
+                    <img src="https://placehold.co/600x300/A5D6A7/1B5E20?text=Revolt+of+1857" alt="Artistic representation of the 1857 Indian Rebellion" class="mx-auto rounded-lg shadow-md">
+                    <figcaption class="mt-2 text-sm text-gray-600">The 1857 uprising significantly altered British policy in India.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="nationalism" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">Rise of Nationalism and Early Movements (Late 19th - Early 20th Century)</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-4">The late 19th century saw the emergence of organized nationalism. The <strong>Indian National Congress (INC)</strong>, founded in 1885, initially sought greater Indian representation in governance through constitutional means.</p>
+                <p class="mb-4">However, growing disillusionment with British policies, such as the <strong class="interactive-term" data-term="bengal-partition">Partition of Bengal (1905)</strong>, fueled more radical sentiments. Leaders like <strong class="interactive-term" data-term="tilak">Bal Gangadhar Tilak</strong>, <strong class="interactive-term" data-term="lala">Lala Lajpat Rai</strong>, and <strong class="interactive-term" data-term="bipin">Bipin Chandra Pal</strong> (the 'Lal-Bal-Pal' trio) advocated for Swaraj (self-rule).</p>
+                 <figure class="my-6 text-center">
+                    <img src="https://placehold.co/600x300/FFCC80/E65100?text=Early+Nationalist+Leaders" alt="Portrait of early Indian nationalist leaders" class="mx-auto rounded-lg shadow-md">
+                    <figcaption class="mt-2 text-sm text-gray-600">The formation of the INC was a key step in organized nationalism.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="gandhian-era" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">The Gandhian Era (1915 - 1947)</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-4"><strong>Mahatma Gandhi</strong>'s return to India in 1915 transformed the independence movement. His philosophy of <strong>Satyagraha</strong> (truth-force) and <strong>non-violent civil disobedience</strong> resonated deeply with the masses. Gandhi's leadership brought millions into the struggle, making it a truly mass movement.</p>
+                <h3 class="text-xl font-semibold mt-6 mb-3">Key Movements:</h3>
+                <ul class="list-disc list-inside space-y-2 mb-6">
+                    <li><strong>Non-Cooperation Movement (1920-1922):</strong> A nationwide protest against British rule, urging boycott of British goods and institutions.</li>
+                    <li><strong>Civil Disobedience Movement (1930-1934):</strong> Famous for the <strong>Dandi March (Salt Satyagraha)</strong>, challenging the British salt monopoly.</li>
+                    <li><strong>Quit India Movement (1942):</strong> A call for immediate British withdrawal during World War II, with the slogan "Do or Die".</li>
+                </ul>
+                <figure class="my-6 text-center">
+                    <img src="https://placehold.co/600x300/B0BEC5/263238?text=Mahatma+Gandhi" alt="Mahatma Gandhi leading a protest" class="mx-auto rounded-lg shadow-md">
+                    <figcaption class="mt-2 text-sm text-gray-600">Mahatma Gandhi's leadership mobilized millions.</figcaption>
+                </figure>
+                <h3 class="text-xl font-semibold mt-8 mb-4">Timeline of Major Gandhian Movements:</h3>
+                <div class="chart-container-styled mb-6">
+                    <canvas id="gandhianMovementsChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-600">The chart above visualizes the approximate durations of key movements led by Mahatma Gandhi, highlighting the sustained nature of the struggle during this era.</p>
+            </div>
+        </section>
+
+        <section id="key-figures" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">Other Key Figures and Movements</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-6">While Gandhi was central, many other leaders and diverse movements significantly contributed to India's independence. Each played a vital role in shaping the course of the freedom struggle. Click on a name to learn more about their contributions.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card p-4 rounded-lg interactive-figure" data-figure="nehru">
+                        <h3 class="text-xl font-semibold mb-2">Jawaharlal Nehru</h3>
+                        <p class="text-sm text-gray-700">Advocate for complete independence and India's first Prime Minister.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg interactive-figure" data-figure="patel">
+                        <h3 class="text-xl font-semibold mb-2">Sardar Vallabhbhai Patel</h3>
+                        <p class="text-sm text-gray-700">Crucial in integrating princely states into India.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg interactive-figure" data-figure="bose">
+                        <h3 class="text-xl font-semibold mb-2">Subhas Chandra Bose</h3>
+                        <p class="text-sm text-gray-700">Advocated for armed struggle, forming the Indian National Army (INA).</p>
+                    </div>
+                    <div class="card p-4 rounded-lg interactive-figure" data-figure="bhagat">
+                        <h3 class="text-xl font-semibold mb-2">Bhagat Singh</h3>
+                        <p class="text-sm text-gray-700">A revolutionary who inspired many with his defiance and sacrifice.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg interactive-figure" data-figure="ambedkar">
+                        <h3 class="text-xl font-semibold mb-2">B.R. Ambedkar</h3>
+                        <p class="text-sm text-gray-700">Championed Dalit rights and was the architect of the Indian Constitution.</p>
+                    </div>
+                    <div class="card p-4 rounded-lg interactive-figure" data-figure="women">
+                        <h3 class="text-xl font-semibold mb-2">Women Leaders</h3>
+                        <p class="text-sm text-gray-700">Figures like Sarojini Naidu, Annie Besant, and Rani Lakshmibai played pivotal roles.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="partition" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">The Road to Partition and Independence (1940s)</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-4">The demand for a separate Muslim state, articulated by the <strong>Muslim League</strong> under <strong>Muhammad Ali Jinnah</strong>, gained significant momentum in the 1940s. Despite efforts to maintain a united India, growing communal tensions and political deadlock eventually led the British to accept the <strong>Partition of India</strong>.</p>
+                <p class="mb-4">On <strong>August 15, 1947</strong>, India gained independence from British rule. However, this momentous occasion was tragically accompanied by the division of the country into two separate nations: India and Pakistan. The partition resulted in widespread communal violence and one of the largest mass migrations in human history, leaving deep and lasting scars.</p>
+                <figure class="my-6 text-center">
+                    <img src="https://placehold.co/600x300/FFCDD2/B71C1C?text=Partition+and+Independence+1947" alt="Historic moment of India's independence or the partition event" class="mx-auto rounded-lg shadow-md">
+                    <figcaption class="mt-2 text-sm text-gray-600">Independence was achieved, but partition brought immense human suffering.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="legacy" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold mb-6 section-title">Legacy of Independence</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg text-lg leading-relaxed">
+                <p class="mb-4">Indian Independence was a monumental achievement, marking the end of nearly 200 years of British colonial rule. It served as a powerful inspiration for liberation movements worldwide, demonstrating the power of non-violent resistance and mass mobilization.</p>
+                <p>The event laid the foundation for India to emerge as the world's largest democracy, committed to the principles of secularism, democracy, and social justice, as enshrined in its meticulously drafted Constitution. The journey of independent India continues, built upon the sacrifices and aspirations of its freedom fighters.</p>
+            </div>
+        </section>
+    </div>
+
+    <div id="infoModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center hidden z-50 p-4">
+        <div class="modal-content p-8 border w-full max-w-md m-auto shadow-lg rounded-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-2xl font-semibold">Details</h3>
+                <button id="closeModal" class="text-gray-700 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            <div id="modalBody" class="text-lg leading-relaxed">
+                <p>Information will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-8 border-t mt-12" style="border-color: var(--border-color);">
+        <p style="color: var(--text-primary);">&copy; 2024 Interactive History. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu
+            const btn = document.querySelector("button.mobile-menu-button");
+            const menu = document.querySelector(".mobile-menu");
+            btn.addEventListener("click", () => {
+                menu.classList.toggle("hidden");
+            });
+
+            // Smooth scroll for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                    // Close mobile menu if open
+                    if (!menu.classList.contains('hidden')) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Active nav link highlighting
+            const sections = document.querySelectorAll("section");
+            const navLinks = document.querySelectorAll("nav a.nav-link, .mobile-menu a.nav-link");
+
+            window.onscroll = () => {
+                let current = "";
+                sections.forEach((section) => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) { // 60 is approx nav height
+                        current = section.getAttribute("id");
+                    }
+                });
+
+                navLinks.forEach((link) => {
+                    link.classList.remove("active");
+                    if (link.getAttribute("href").includes(current)) {
+                        link.classList.add("active");
+                    }
+                });
+            };
+            
+            // Modal functionality
+            const modal = document.getElementById('infoModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            const termDetails = {
+                'plassey': {
+                    title: 'Battle of Plassey (1757)',
+                    info: 'A decisive victory of the British East India Company over the Nawab of Bengal and his French allies. It consolidated the Company\'s presence in Bengal, which later expanded to cover much of India.'
+                },
+                'buxar': {
+                    title: 'Battle of Buxar (1764)',
+                    info: 'Fought between the British East India Company and the combined armies of Mir Qasim (Nawab of Bengal), Shuja-ud-Daula (Nawab of Awadh), and Shah Alam II (Mughal Emperor). The British victory gave them diwani, i.e., rights to collect revenue in Bengal, Bihar, and Orissa.'
+                },
+                'bengal-partition': {
+                    title: 'Partition of Bengal (1905)',
+                    info: 'Announced by Lord Curzon, the Viceroy of India, it separated the largely Muslim eastern areas from the largely Hindu western areas. It was met with widespread protests and is seen as a key moment in fueling Indian nationalism and the Swadeshi movement.'
+                },
+                'tilak': {
+                    title: 'Bal Gangadhar Tilak',
+                    info: 'An Indian nationalist, teacher, and an independence activist. He was one third of the Lal Bal Pal triumvirate. Tilak was the first leader of the Indian Independence Movement. The British colonial authorities called him "The father of the Indian unrest."'
+                },
+                 'lala': {
+                    title: 'Lala Lajpat Rai',
+                    info: 'An Indian independence activist, author, and politician. He was popularly known as Punjab Kesari. He was one of the three members of the Lal Bal Pal triumvirate. He sustained serious injuries by the police when leading a non-violent protest against the Simon Commission and died a few weeks later.'
+                },
+                'bipin': {
+                    title: 'Bipin Chandra Pal',
+                    info: 'An Indian nationalist, writer, orator, social reformer and Indian independence movement activist. He was one third of the Lal Bal Pal triumvirate. Pal was one of the main architects of the Swadeshi movement. He stood against the partition of Bengal by the British colonial government.'
+                }
+            };
+
+            const figureDetails = {
+                'nehru': {
+                    title: 'Jawaharlal Nehru',
+                    info: 'A principal leader of the Indian independence movement in the 1930s and \'40s. He became the first Prime Minister of India and a central figure in Indian politics before and after independence. He was a staunch advocate for democratic socialism and a secular state.'
+                },
+                'patel': {
+                    title: 'Sardar Vallabhbhai Patel',
+                    info: 'An Indian statesman. He served as the first Deputy Prime Minister of India. He was an Indian barrister and a senior leader of the Indian National Congress who played a leading role in the country\'s struggle for independence and guided its integration into a united, independent nation. Known as the "Iron Man of India".'
+                },
+                'bose': {
+                    title: 'Subhas Chandra Bose',
+                    info: 'An Indian nationalist whose defiant patriotism made him a hero in India. He attempted during World War II to rid India of British rule with the help of Nazi Germany and Imperial Japan. He formed the Azad Hind Fauj (Indian National Army) and the Azad Hind Government.'
+                },
+                'bhagat': {
+                    title: 'Bhagat Singh',
+                    info: 'An Indian revolutionary socialist who was influential in the Indian independence movement. He was involved in two high-profile attacks on British authorities and was executed at the age of 23. His actions and sacrifice made him a folk hero of the Indian independence movement.'
+                },
+                'ambedkar': {
+                    title: 'B.R. Ambedkar',
+                    info: 'An Indian jurist, economist, politician and social reformer who inspired the Dalit Buddhist movement and campaigned against social discrimination towards the untouchables (Dalits). He was independent India\'s first Minister of Law and Justice, and the chief architect of the Constitution of India.'
+                },
+                'women': {
+                    title: 'Prominent Women Leaders',
+                    info: 'Many women played crucial roles. Sarojini Naidu, known as the "Nightingale of India", was a poet and political activist. Annie Besant, a British socialist, was instrumental in the Home Rule Movement. Rani Lakshmibai of Jhansi was a leading figure in the 1857 revolt. Many other women participated in protests, organized movements, and faced imprisonment.'
+                }
+            };
+
+            document.querySelectorAll('.interactive-term').forEach(termEl => {
+                termEl.style.cursor = 'pointer';
+                termEl.style.textDecoration = 'underline';
+                termEl.style.color = 'var(--accent-green)';
+                termEl.addEventListener('click', () => {
+                    const termKey = termEl.dataset.term;
+                    const detail = termDetails[termKey];
+                    if (detail) {
+                        modalTitle.textContent = detail.title;
+                        modalBody.innerHTML = `<p>${detail.info}</p>`;
+                        modal.classList.remove('hidden');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.interactive-figure').forEach(figureEl => {
+                figureEl.style.cursor = 'pointer';
+                figureEl.addEventListener('click', () => {
+                    const figureKey = figureEl.dataset.figure;
+                    const detail = figureDetails[figureKey];
+                    if (detail) {
+                        modalTitle.textContent = detail.title;
+                        modalBody.innerHTML = `<p>${detail.info}</p>`; // Using innerHTML to allow for potential basic formatting if needed
+                        modal.classList.remove('hidden');
+                    }
+                });
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+
+            // Chart.js for Gandhian Era Movements
+            const ctx = document.getElementById('gandhianMovementsChart').getContext('2d');
+            const gandhianMovementsChart = new Chart(ctx, {
+                type: 'bar', // Horizontal bar chart
+                data: {
+                    labels: ['Non-Cooperation (1920-22)', 'Civil Disobedience (1930-34)', 'Quit India (1942)'],
+                    datasets: [{
+                        label: 'Approx. Duration (Years)',
+                        data: [2, 4, 1], // Approximate durations. Quit India was intense but short-lived in its main phase.
+                        backgroundColor: [
+                            'rgba(255, 159, 64, 0.7)', // Saffron-like
+                            'rgba(75, 192, 192, 0.7)',  // Green-like
+                            'rgba(255, 99, 132, 0.7)'   // Red-like for intensity
+                        ],
+                        borderColor: [
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // This makes it a horizontal bar chart
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Approximate Duration in Years'
+                            }
+                        },
+                        y: {
+                           ticks: {
+                                autoSkip: false, // Ensure all labels are shown
+                                callback: function(value, index, values) {
+                                    let label = this.getLabelForValue(value);
+                                    if (label.length > 16) { // Character limit before wrapping attempt
+                                        return label.match(/.{1,16}/g); // Split into lines of 16 chars
+                                    }
+                                    return label;
+                                }
+                           }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hiding legend as it's clear from axis
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + ' years';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

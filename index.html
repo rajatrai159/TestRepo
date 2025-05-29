@@ -3,67 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Independence Portal</title>
+    <title>AI & Coding Insights - Modern Blog</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Sovereign Dawn Palette */
-        :root {
-            --bg-main: #F5F5DC; /* Beige */
-            --text-primary: #2C3E50; /* Dark Slate Blue */
-            --accent-saffron: #FF9933;
-            --card-bg: #FFFFFF;
-            --border-color: #D1D5DB; /* Tailwind gray-300 */
+        /* Custom styles for font and base overrides */
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-gray-50 text-gray-800; /* Default background and text color */
+        }
+        /* Hide scrollbar for aesthetic, but allow scrolling */
+        body::-webkit-scrollbar {
+            display: none;
         }
         body {
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
-        .container-card {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-        }
-        .btn-primary {
-            background-color: var(--accent-saffron);
-            color: white;
+        /* Custom styles for hamburger icon */
+        .hamburger {
+            display: block;
+            width: 25px;
+            height: 3px;
+            @apply bg-gray-800;
+            position: relative;
             transition: background-color 0.3s ease;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            display: inline-block; /* Ensure padding works */
-            text-decoration: none; /* Remove underline for links */
         }
-        .btn-primary:hover {
-            background-color: #E68A00; /* Darker Saffron */
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            width: 100%;
+            height: 3px;
+            @apply bg-gray-800;
+            position: absolute;
+            left: 0;
+            transition: transform 0.3s ease, top 0.3s ease;
+        }
+        .hamburger::before { top: -8px; }
+        .hamburger::after { top: 8px; }
+
+        .hamburger.open {
+            background-color: transparent;
+        }
+        .hamburger.open::before {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.open::after {
+            transform: translateY(-8px) rotate(-45deg);
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="flex flex-col min-h-screen">
+    <header class="bg-white shadow-sm py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-gray-900 rounded-md p-2 hover:bg-gray-100 transition-colors">
+                AI & Coding Insights
+            </a>
+            <nav class="main-nav">
+                <button class="nav-toggle md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span class="hamburger"></span>
+                </button>
+                <ul class="nav-links hidden md:flex space-x-6">
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Home</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">AI</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Coding</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">About</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <div class="container-card">
-        <h1 class="text-4xl font-bold mb-6" style="color: var(--text-primary);">Explore India's Freedom Struggle</h1>
-        <p class="text-lg leading-relaxed mb-8">
-            Welcome to the portal dedicated to the rich and inspiring history of Indian Independence.
-            Delve into the pivotal moments, influential leaders, and significant movements that shaped India's journey from colonial rule to a sovereign nation.
-        </p>
-        <a href="IndianIndependence.html" class="btn-primary">Start Your Journey</a>
-        <p class="mt-6 text-sm text-gray-600">
-            Click the button above to access the interactive application.
-        </p>
+    <div class="mobile-menu hidden md:hidden bg-white shadow-md py-4">
+        <ul class="flex flex-col items-center space-y-4">
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">Home</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">AI</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">Coding</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">About</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">Contact</a></li>
+        </ul>
     </div>
 
+    <main class="flex-grow">
+        <section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20 px-4 text-center rounded-b-lg shadow-lg mb-12">
+            <div class="container mx-auto">
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                    Explore the Future of AI & Code
+                </h1>
+                <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-90">
+                    Deep dives, tutorials, and insights into artificial intelligence and modern software development.
+                </p>
+                <form class="search-bar flex justify-center max-w-xl mx-auto">
+                    <input type="text" placeholder="Search articles..." class="flex-grow p-3 rounded-l-lg border-none focus:ring-2 focus:ring-blue-300 text-gray-800 shadow-md outline-none">
+                    <button type="submit" class="bg-gray-900 text-white px-6 py-3 rounded-r-lg hover:bg-gray-700 transition-colors shadow-md">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="py-12 px-4">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-900">Featured Articles</h2>
+                <div class="post-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <article class="post-card bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                        <img src="https://placehold.co/600x400/E0F2F7/007BFF?text=AI+Ethics" alt="AI Ethics" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="post-category inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">AI Ethics</span>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                                <a href="#" class="hover:text-blue-600 transition-colors">The Ethics of AI: A Comprehensive Guide</a>
+                            </h3>
+                            <p class="text-gray-600 text-sm mb-4">Exploring the moral dilemmas and responsible development in artificial intelligence.</p>
+                            <div class="post-meta text-gray-500 text-xs flex justify-between items-center">
+                                <span>John Doe</span>
+                                <span>May 25, 2025 | 8 min read</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="post-card bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                        <img src="https://placehold.co/600x400/E0F7E0/28A745?text=Python+Tips" alt="Python Tips" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="post-category inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">Coding</span>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                                <a href="#" class="hover:text-blue-600 transition-colors">10 Advanced Python Tips for Clean Code</a>
+                            </h3>
+                            <p class="text-gray-600 text-sm mb-4">Elevate your Python skills with these best practices and hidden gems.</p>
+                            <div class="post-meta text-gray-500 text-xs flex justify-between items-center">
+                                <span>Jane Smith</span>
+                                <span>May 20, 2025 | 6 min read</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="post-card bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                        <img src="https://placehold.co/600x400/F7F2E0/FFC107?text=Machine+Learning" alt="Machine Learning" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <span class="post-category inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">AI</span>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                                <a href="#" class="hover:text-blue-600 transition-colors">Understanding Neural Networks from Scratch</a>
+                            </h3>
+                            <p class="text-gray-600 text-sm mb-4">A beginner-friendly guide to the building blocks of deep learning.</p>
+                            <div class="post-meta text-gray-500 text-xs flex justify-between items-center">
+                                <span>Dr. AI Guru</span>
+                                <span>May 18, 2025 | 12 min read</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-12 px-4 bg-gray-100">
+            <div class="container mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-900">Latest from the Blog</h2>
+                <div class="post-list flex flex-col gap-6" id="latest-posts-container">
+                    <article class="post-list-item bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row items-start transform transition-transform duration-300 hover:scale-[1.01] hover:shadow-lg">
+                        <img src="https://placehold.co/200x120/F0F8FF/6A5ACD?text=Web+Dev" alt="Web Dev" class="w-full md:w-64 h-40 md:h-32 object-cover flex-shrink-0 rounded-t-xl md:rounded-l-xl md:rounded-t-none">
+                        <div class="p-5 flex-grow">
+                            <span class="post-category inline-block bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1 rounded-full mb-2">Coding</span>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                                <a href="#" class="hover:text-blue-600 transition-colors">Modern Web Development Trends in 2025</a>
+                            </h3>
+                            <p class="text-gray-600 text-sm line-clamp-2 mb-3">Explore the latest technologies and frameworks shaping the web development landscape.</p>
+                            <div class="post-meta text-gray-500 text-xs flex justify-between items-center">
+                                <span>Alice Wonderland</span>
+                                <span>May 15, 2025 | 7 min read</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="post-list-item bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row items-start transform transition-transform duration-300 hover:scale-[1.01] hover:shadow-lg">
+                        <img src="https://placehold.co/200x120/FFF0F5/FF69B4?text=Data+Science" alt="Data Science" class="w-full md:w-64 h-40 md:h-32 object-cover flex-shrink-0 rounded-t-xl md:rounded-l-xl md:rounded-t-none">
+                        <div class="p-5 flex-grow">
+                            <span class="post-category inline-block bg-pink-100 text-pink-800 text-xs font-semibold px-3 py-1 rounded-full mb-2">AI</span>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                                <a href="#" class="hover:text-blue-600 transition-colors">The Role of Data Science in Modern AI</a>
+                            </h3>
+                            <p class="text-gray-600 text-sm line-clamp-2 mb-3">Understanding how data drives the intelligence of today's AI systems.</p>
+                            <div class="post-meta text-gray-500 text-xs flex justify-between items-center">
+                                <span>Bob Data</span>
+                                <span>May 10, 2025 | 9 min read</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="post-list-item bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row items-start transform transition-transform duration-300 hover:scale-[1.01] hover:shadow-lg">
+                        <img src="https://placehold.co/200x120/E6F7FF/1890FF?text=Cloud+Computing" alt="Cloud Computing" class="w-full md:w-64 h-40 md:h-32 object-cover flex-shrink-0 rounded-t-xl md:rounded-l-xl md:rounded-t-none">
+                        <div class="p-5 flex-grow">
+                            <span class="post-category inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full mb-2">Coding</span>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                                <a href="#" class="hover:text-blue-600 transition-colors">Serverless Functions: A Developer's Guide</a>
+                            </h3>
+                            <p class="text-gray-600 text-sm line-clamp-2 mb-3">Dive into the world of serverless computing with practical examples.</p>
+                            <div class="post-meta text-gray-500 text-xs flex justify-between items-center">
+                                <span>Charlie Cloud</span>
+                                <span>May 05, 2025 | 10 min read</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <button id="load-more-btn" class="block mx-auto mt-8 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                    Load More Articles
+                </button>
+            </div>
+        </section>
+
+        <aside class="newsletter-signup bg-gray-900 text-white py-16 px-4 text-center rounded-t-lg shadow-inner mt-12">
+            <div class="container mx-auto">
+                <h3 class="text-3xl md:text-4xl font-bold mb-4">Stay Updated with AI & Coding Insights</h3>
+                <p class="text-lg mb-8 max-w-2xl mx-auto opacity-90">
+                    Subscribe to our newsletter for exclusive content and latest articles directly to your inbox.
+                </p>
+                <form class="flex justify-center max-w-xl mx-auto">
+                    <input type="email" placeholder="Your email address" required class="flex-grow p-3 rounded-l-lg border-none focus:ring-2 focus:ring-blue-300 text-gray-800 shadow-md outline-none">
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-r-lg hover:bg-blue-700 transition-colors shadow-md">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-12 px-4">
+        <div class="container mx-auto">
+            <div class="footer-columns grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="footer-col">
+                    <h4 class="text-xl font-semibold text-white mb-4">About Us</h4>
+                    <p class="text-sm">Dedicated to demystifying AI and making coding accessible to everyone, from beginners to experts.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="text-xl font-semibold text-white mb-4">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Artificial Intelligence</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Software Development</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Machine Learning</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Web Technologies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="text-xl font-semibold text-white mb-4">Follow Us</h4>
+                    <div class="social-links flex space-x-4">
+                        <a href="#" aria-label="Twitter" class="hover:text-blue-400 transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.007-.533A8.349 8.349 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.41-4.26 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012 10.425v.054a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.401a11.616 11.616 0 006.29 1.85z"/></svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="hover:text-blue-400 transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                        </a>
+                        <a href="#" aria-label="GitHub" class="hover:text-blue-400 transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.387.6.11 1.093-.26 1.093-.577v-2.04c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.332-1.758-1.332-1.758-1.09-.745.082-.73.082-.73 1.205.086 1.838 1.238 1.838 1.238 1.07 1.834 2.807 1.304 3.49.998.108-.775.418-1.304.762-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.12-.304-.535-1.52.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.4 3.003-.404 1.02.004 2.046.138 3.003.404 2.293-1.552 3.3-1.23 3.3-1.23.652 1.656.237 2.872.117 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.805 5.62-5.475 5.92.43.37.823 1.102.823 2.222v3.293c0 .318.48.69.993.577C20.562 21.8 24 17.303 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom text-center pt-8 border-t border-gray-700 text-sm">
+                <p>&copy; 2025 AI & Coding Insights. All rights reserved.</p>
+                <p class="mt-2">
+                    <a href="#" class="hover:text-blue-400 transition-colors mx-2">Privacy Policy</a> |
+                    <a href="#" class="hover:text-blue-400 transition-colors mx-2">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Navigation Toggle
+            const navToggle = document.querySelector('.nav-toggle');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (navToggle && mobileMenu && hamburger) {
+                navToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    hamburger.classList.toggle('open');
+                });
+            }
+
+            // Basic Client-Side Search Filter
+            const searchForm = document.querySelector('.search-bar');
+            const searchInput = searchForm ? searchForm.querySelector('input[type="text"]') : null;
+            const allPostCards = document.querySelectorAll('.post-card, .post-list-item');
+
+            if (searchForm && searchInput && allPostCards.length > 0) {
+                searchForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const searchTerm = searchInput.value.toLowerCase();
+
+                    allPostCards.forEach(post => {
+                        const titleElement = post.querySelector('h3 a');
+                        const contentElement = post.querySelector('p');
+                        const categoryElement = post.querySelector('.post-category');
+
+                        const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+                        const content = contentElement ? contentElement.textContent.toLowerCase() : '';
+                        const category = categoryElement ? categoryElement.textContent.toLowerCase() : '';
+
+                        if (title.includes(searchTerm) || content.includes(searchTerm) || category.includes(searchTerm)) {
+                            post.style.display = 'block'; /* Show the post */
+                            // For grid/flex parents, you might need to adjust this
+                            if (post.classList.contains('post-card')) {
+                                post.style.display = 'block'; // Default block for grid item
+                            } else if (post.classList.contains('post-list-item')) {
+                                post.style.display = 'flex'; // Default flex for list item
+                            }
+                        } else {
+                            post.style.display = 'none'; /* Hide the post */
+                        }
+                    });
+
+                    // Optional: Scroll to the first visible post or show a "no results" message
+                    const firstVisiblePost = Array.from(allPostCards).find(post => post.style.display !== 'none');
+                    if (firstVisiblePost) {
+                        firstVisiblePost.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        // In a real app, you'd show a user-friendly message
+                        console.log('No articles found matching your search.');
+                    }
+                });
+            }
+
+            // Simulate "Load More Articles" functionality
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const latestPostsContainer = document.getElementById('latest-posts-container');
+            let articlesLoaded = 3; // Initial articles shown
+            const totalDummyArticles = 9; // Total number of dummy articles available
+            const articlesPerLoad = 3;
+
+            if (loadMoreBtn && latestPostsContainer) {
+                loadMoreBtn.addEventListener('click', () => {
+                    // In a real application, you would fetch more articles from a database or API here.
+                    // For this demo, we'll clone and modify existing articles.
+                    const existingArticleTemplate = latestPostsContainer.querySelector('.post-list-item');
+
+                    if (articlesLoaded < totalDummyArticles) {
+                        for (let i = 0; i < articlesPerLoad; i++) {
+                            if (articlesLoaded < totalDummyArticles) {
+                                const newArticle = existingArticleTemplate.cloneNode(true);
+                                // Update content for the new dummy article
+                                newArticle.querySelector('img').src = `https://placehold.co/200x120/E0F8F7/007BFF?text=New+Post+${articlesLoaded + 1}`;
+                                newArticle.querySelector('h3 a').textContent = `New AI/Coding Breakthrough ${articlesLoaded + 1}`;
+                                newArticle.querySelector('p').textContent = `This is a summary of the exciting new article number ${articlesLoaded + 1} about AI and coding advancements.`;
+                                newArticle.querySelector('.post-meta span:first-child').textContent = `Author ${articlesLoaded + 1}`;
+                                newArticle.querySelector('.post-meta span:last-child').textContent = `May ${1 + (articlesLoaded % 20)}, 2025 | ${5 + (articlesLoaded % 5)} min read`;
+
+                                latestPostsContainer.appendChild(newArticle);
+                                articlesLoaded++;
+                            }
+                        }
+                    }
+
+                    // Hide the button if all dummy articles are loaded
+                    if (articlesLoaded >= totalDummyArticles) {
+                        loadMoreBtn.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

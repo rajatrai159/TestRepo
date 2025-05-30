@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Neural Networks from Scratch - AI & Coding Insights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Using a slightly warmer off-white background and darker text for better contrast */
+            @apply bg-gray-100 text-gray-900;
+        }
+
+        /* Hide scrollbar for aesthetic, but allow scrolling */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* Custom styles for hamburger icon (for mobile navigation toggle) */
+        .hamburger {
+            display: block;
+            width: 25px;
+            height: 3px;
+            @apply bg-gray-800;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            width: 100%;
+            height: 3px;
+            @apply bg-gray-800;
+            position: absolute;
+            left: 0;
+            transition: transform 0.3s ease, top 0.3s ease;
+        }
+        .hamburger::before { top: -8px; }
+        .hamburger::after { top: 8px; }
+
+        .hamburger.open {
+            background-color: transparent;
+        }
+        .hamburger.open::before {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.open::after {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Prose styles for better readability of article content */
+        .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+            /* Increased margin-top for better separation and bolder text */
+            @apply text-gray-900 font-extrabold mb-4 mt-12;
+            line-height: 1.25; /* Tighter line height for headings */
+        }
+        .prose h1 { @apply text-4xl md:text-5xl lg:text-6xl; }
+        .prose h2 { @apply text-3xl md:text-4xl lg:text-5xl; }
+        .prose h3 { @apply text-2xl md:text-3xl lg:text-4xl; }
+        .prose p {
+            /* Slightly larger base font size and increased line height for readability */
+            @apply text-gray-700 mb-6; /* Removed leading-relaxed here to apply custom line-height below */
+            font-size: 1.125rem; /* text-lg */
+            line-height: 1.8; /* Slightly more generous line height for paragraphs */
+            /* Optional: Add a subtle text indent for a traditional feel */
+            text-indent: 1.5em;
+        }
+        .prose ul {
+            @apply list-disc list-inside mb-6 pl-5;
+        }
+        .prose ul li {
+            @apply mb-2 text-gray-700 text-lg; /* Apply text-lg to list items as well */
+            line-height: 1.6; /* Slightly more generous line height for list items */
+        }
+        .prose strong {
+            @apply font-bold text-gray-900; /* Bolder strong text */
+        }
+
+        /* Hero image container with enhanced overlay and shadow */
+        .hero-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem; /* rounded-lg */
+            /* More pronounced shadow for depth */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .hero-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Stronger and more dynamic gradient overlay */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 1;
+            border-radius: 0.75rem;
+        }
+        .hero-image-container img {
+            position: relative;
+            z-index: 0;
+            transition: transform 0.4s ease-in-out; /* Smoother zoom on hover */
+        }
+        .hero-image-container:hover img {
+            transform: scale(1.05); /* Slightly more zoom */
+        }
+        .hero-text-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2.5rem; /* Increased padding for more breathing room */
+            color: white;
+            /* Stronger text shadow for better readability against the image */
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+            z-index: 2;
+        }
+
+        /* Callout block style with improved visual emphasis */
+        .callout-block {
+            /* More distinct background and border color */
+            @apply bg-blue-50 border-l-4 border-blue-600 text-blue-800 p-6 rounded-lg my-8 shadow-md;
+        }
+        .callout-block p {
+            @apply font-semibold text-blue-900 text-xl leading-relaxed; /* Bolder and slightly larger text for quotes */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-white shadow-md py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-extrabold text-gray-900 rounded-md p-2 hover:bg-gray-100 transition-colors">
+                AI & Coding Insights
+            </a>
+            <nav class="main-nav">
+                <button class="nav-toggle md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span class="hamburger"></span>
+                </button>
+                <ul class="nav-links hidden md:flex space-x-6">
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Home</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">AI</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Coding</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">About</a></li>
+                    <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="mobile-menu hidden md:hidden bg-white shadow-md py-4">
+        <ul class="flex flex-col items-center space-y-4">
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">Home</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">AI</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">Coding</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">About</a></li>
+            <li><a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100 w-full text-center">Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="min-h-screen flex flex-col items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
+        <header class="w-full max-w-4xl bg-white shadow-lg rounded-xl p-6 mb-8">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-center text-indigo-700 mb-4">
+                Understanding Neural Networks from Scratch
+            </h1>
+            <p class="text-lg sm:text-xl text-center text-gray-600">
+                By <span class="font-semibold text-indigo-600">AI & Coding Insights Team</span>
+            </p>
+        </header>
+
+        <main class="w-full max-w-4xl bg-white shadow-lg rounded-xl p-8 mb-8 prose">
+            <div class="hero-image-container mb-12">
+                <img src="https://placehold.co/1200x600/8B5CF6/FFFFFF?text=Neural+Network+Concept" alt="Abstract image representing a neural network, with interconnected nodes and layers" class="w-full h-auto object-cover rounded-lg">
+                <div class="hero-text-overlay">
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-2">Demystifying the Core of Modern AI</h2>
+                    <p class="text-xl sm:text-2xl">Dive deep into the fundamental building blocks of artificial intelligence.</p>
+                </div>
+            </div>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Introduction: Unpacking the "Black Box"</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Neural networks are at the heart of many groundbreaking advancements in Artificial Intelligence, from image recognition and natural language processing to self-driving cars. While frameworks like TensorFlow and PyTorch make it easy to build and train complex models, truly understanding how neural networks work requires a peek under the hood. This blog post aims to demystify neural networks by breaking down their core components and processes from scratch, without relying on high-level libraries.
+                </p>
+                <p class="text-base leading-relaxed text-gray-700">
+                    By understanding the foundational math and logic, you'll gain a deeper appreciation for these powerful algorithms and be better equipped to troubleshoot, optimize, and innovate.
+                </p>
+            </section>
+
+            <div class="callout-block">
+                <p>
+                    "To truly master AI, one must not just use the tools, but understand the gears and levers beneath the surface. Building a neural network from scratch is the ultimate exercise in demystification."
+                </p>
+            </div>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">1. The Neuron: The Basic Building Block</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Inspired by the human brain, a neural network is composed of interconnected "neurons." Each artificial neuron receives one or more inputs, applies a transformation to them, and then produces an output.
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Inputs ($x_1, x_2, \dots, x_n$):</span> Data points fed into the neuron.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Weights ($w_1, w_2, \dots, w_n$):</span> Numerical values that determine the strength of the connection between inputs and the neuron. These are learned during training.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Bias ($b$):</span> An additional input to the neuron that allows it to activate even if all inputs are zero.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Summation Function:</span> The weighted sum of inputs and the bias: $Z = \sum_{i=1}^{n} (x_i \cdot w_i) + b$.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Activation Function ($f$):</span> A non-linear function applied to the summation output. This introduces non-linearity, allowing the network to learn complex patterns. Common examples include Sigmoid, ReLU, and Tanh. Output is $A = f(Z)$.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">2. Layers: Organizing Neurons</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Neurons are organized into layers. A typical neural network has at least three types of layers:
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Input Layer:</span> Receives the raw data. No computations are performed here; it simply passes the inputs to the first hidden layer.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Hidden Layers:</span> One or more layers between the input and output layers. These layers perform the bulk of the computation and feature extraction. The more hidden layers, the "deeper" the network.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Output Layer:</span> Produces the final prediction or classification. The number of neurons in this layer depends on the task (e.g., 1 for binary classification, multiple for multi-class classification).
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">3. Forward Propagation: Making a Prediction</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Forward propagation is the process of feeding inputs through the network to get an output. It involves:
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Input to First Hidden Layer:</span> Each neuron in the first hidden layer calculates its weighted sum and applies its activation function based on the input layer's values.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Hidden Layer to Hidden Layer (if applicable):</span> The outputs of one hidden layer become the inputs for the next hidden layer.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Last Hidden Layer to Output Layer:</span> The outputs of the final hidden layer are fed into the output layer to produce the network's prediction.
+                    </li>
+                </ul>
+                <pre class="bg-gray-800 text-white p-4 rounded-md text-sm overflow-x-auto"><code>
+# Simplified Python pseudo-code for forward propagation
+def forward_propagate(inputs, weights, biases, activation_fn):
+    # For a single layer
+    weighted_sum = sum(x * w for x, w in zip(inputs, weights)) + biases
+    output = activation_fn(weighted_sum)
+    return output
+
+# In a multi-layer network, this would be chained across layers.
+                </code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">4. Loss Function: Measuring Error</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    After forward propagation, the network's prediction is compared to the actual target value using a loss (or cost) function. This function quantifies how "wrong" the prediction is. Common loss functions include:
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Mean Squared Error (MSE):</span> For regression tasks. $L = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2$.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Cross-Entropy Loss:</span> For classification tasks.
+                    </li>
+                </ul>
+                <pre class="bg-gray-800 text-white p-4 rounded-md text-sm overflow-x-auto"><code>
+# Simplified Python pseudo-code for MSE loss
+def mean_squared_error(y_true, y_pred):
+    return sum((true - pred)**2 for true, pred in zip(y_true, y_pred)) / len(y_true)
+                </code></pre>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">5. Backpropagation: Learning from Mistakes</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    This is the core of how neural networks learn. Backpropagation is an algorithm that calculates the gradient of the loss function with respect to each weight and bias in the network. Essentially, it determines how much each weight and bias contributed to the error.
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Chain Rule:</span> Backpropagation heavily relies on the chain rule from calculus to compute gradients layer by layer, moving backward from the output layer to the input layer.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Gradient Calculation:</span> For each weight and bias, it calculates $\frac{\partial L}{\partial w}$ and $\frac{\partial L}{\partial b}$.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">6. Gradient Descent: Adjusting Weights and Biases</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Once the gradients are calculated via backpropagation, an optimization algorithm like Gradient Descent is used to adjust the weights and biases. The goal is to minimize the loss function.
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Learning Rate ($\alpha$):</span> A hyperparameter that determines the size of the steps taken during weight updates. A small learning rate means slow convergence, while a large one might overshoot the minimum.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Update Rule:</span> $w_{new} = w_{old} - \alpha \cdot \frac{\partial L}{\partial w}$ and $b_{new} = b_{old} - \alpha \cdot \frac{\partial L}{\partial b}$.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">7. Training Loop: Iterative Learning</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    The entire process of forward propagation, loss calculation, backpropagation, and weight updates is repeated many times over the training dataset. Each full pass through the dataset is called an "epoch."
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Epochs:</span> Number of times the entire training dataset is passed through the network.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Batch Size:</span> Number of samples processed before the model's internal parameters are updated.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">8. Activation Functions: Introducing Non-linearity</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Without activation functions, a neural network would simply be performing linear transformations, no matter how many layers it has. Non-linearity allows the network to learn complex, non-linear relationships in data.
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Sigmoid:</span> Squashes values between 0 and 1. Useful for output layers in binary classification.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">ReLU (Rectified Linear Unit):</span> $f(x) = \max(0, x)$. Most common for hidden layers due to computational efficiency and mitigating vanishing gradients.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Softmax:</span> Used in the output layer for multi-class classification, converting outputs into probabilities that sum to 1.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">9. Hyperparameters: Tuning the Learning Process</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Hyperparameters are parameters whose values are set before the learning process begins. They are not learned by the model itself.
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Learning Rate:</span> As discussed, controls the step size.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Number of Hidden Layers:</span> Determines the depth of the network.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Number of Neurons per Layer:</span> Influences the network's capacity.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Activation Functions:</span> Choice impacts the network's ability to learn non-linearities.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Epochs and Batch Size:</span> Affect training duration and stability.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">10. Overfitting and Underfitting: Common Challenges</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Two common problems encountered during neural network training:
+                </p>
+                <ul class="list-disc list-inside text-base leading-relaxed text-gray-700 ml-4">
+                    <li class="mb-2">
+                        <span class="font-medium">Overfitting:</span> The model learns the training data too well, including noise, and performs poorly on unseen data. Solutions include more data, regularization (L1/L2), and dropout.
+                    </li>
+                    <li class="mb-2">
+                        <span class="font-medium">Underfitting:</span> The model is too simple to capture the underlying patterns in the data, resulting in poor performance on both training and test data. Solutions include increasing model complexity (more layers/neurons) or using a more suitable architecture.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Conclusion: The Foundation for AI Innovation</h2>
+                <p class="text-base leading-relaxed text-gray-700 mb-4">
+                    Understanding neural networks from scratch provides a solid foundation for delving into more advanced AI concepts and architectures. While the math can seem daunting at first, breaking it down into individual components—neurons, layers, forward propagation, loss, backpropagation, and gradient descent—reveals a logical and elegant system for learning from data. With this fundamental knowledge, you're now better equipped to explore the vast and exciting world of deep learning and contribute to the next wave of AI innovation.
+                </p>
+            </section>
+        </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-12 px-4 mt-16">
+        <div class="container mx-auto">
+            <div class="footer-columns grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+                <div class="footer-col">
+                    <h4 class="text-xl font-bold text-white mb-5">About Us</h4>
+                    <p class="text-sm leading-relaxed">Dedicated to demystifying AI and making coding accessible to everyone, from beginners to experts. We provide insights, tutorials, and news on the latest in AI and software development.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="text-xl font-bold text-white mb-5">Categories</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Artificial Intelligence</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Software Development</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Machine Learning</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Web Technologies</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors text-sm">Programming Languages</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="text-xl font-bold text-white mb-5">Follow Us</h4>
+                    <div class="social-links flex space-x-5">
+                        <a href="#" aria-label="Twitter" class="hover:text-blue-400 transition-colors transform hover:scale-110">
+                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.007-.533A8.349 8.349 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.41-4.26 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012 10.425v.054a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.401a11.616 11.616 0 006.29 1.85z"/></svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="hover:text-blue-400 transition-colors transform hover:scale-110">
+                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                        </a>
+                        <a href="#" aria-label="GitHub" class="hover:text-blue-400 transition-colors transform hover:scale-110">
+                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 0C5.373 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.387.6.11 1.093-.26 1.093-.577v-2.04c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.332-1.758-1.332-1.758-1.09-.745.082-.73.082-.73 1.205.086 1.838 1.238 1.838 1.238 1.07 1.834 2.807 1.304 3.49.998.108-.775.418-1.304.762-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.12-.304-.535-1.52.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.4 3.003-.404 1.02.004 2.046.138 3.003.404 2.293-1.552 3.3-1.23 3.3-1.23.652 1.656.237 2.872.117 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.805 5.62-5.475 5.92.43.37.823 1.102.823 2.222v3.293c0 .318.48.69.993.577C20.562 21.8 24 17.303 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom text-center pt-8 border-t border-gray-700 text-sm">
+                <p>&copy; 2025 AI & Coding Insights. All rights reserved.</p>
+                <p class="mt-3">
+                    <a href="#" class="hover:text-blue-400 transition-colors mx-2">Privacy Policy</a> |
+                    <a href="#" class="hover:text-blue-400 transition-colors mx-2">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Navigation Toggle
+            const navToggle = document.querySelector('.nav-toggle');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (navToggle && mobileMenu && hamburger) {
+                navToggle.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    hamburger.classList.toggle('open');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
